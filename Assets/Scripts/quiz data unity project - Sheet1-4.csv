@@ -1,0 +1,9 @@
+Question,Type,Answers,,,,,,,,
+What does the CAP in CAP Theorem stand for?,ChooseOne,Computer Advancement Practice,Consistency Availability Partition Tolerance,CPU ALU Performance,Consistency Atomicity Primary Key,_BREAK ANSWERS_,1,,,
+Which of the following are characteristics of Optimistic Concurrency Control?,AllThatApply,Works well with read heavy workloads,Works well with write heavy workloads,Conflict resolution,Uses Locks,Uses version control,_BREAK ANSWERS_,0,2,4
+This question is intentionally malformed,,,,,,,,,,
+This question is intentionally malformed,wrong type,Works well with read heavy workloads,Works well with write heavy workloads,Conflict resolution,Uses Locks,Uses version control,_BREAK ANSWERS_,0,2,4
+This question is intentionally malformed,AllThatApply,Works well with read heavy workloads,Works well with write heavy workloads,Conflict resolution,Uses Locks,Uses version control,0,2,4,
+This question is intentionally malformed,AllThatApply,Works well with read heavy workloads,Works well with write heavy workloads,Conflict resolution,Uses Locks,Uses version control,_BREAK ANSWERS_,,,
+Order the levels of consistency in order of least strict to most strict,Order,Eventual Consistency,Sequential Consistency,Causal Constency,Linearizability / Atomic Consistency,_BREAK ANSWERS_,0,2,3,1
+What is the complexity of a B-Tree lookup ,ChooseOne,n*log(n),log(n),n,_BREAK ANSWERS_,1,,,,

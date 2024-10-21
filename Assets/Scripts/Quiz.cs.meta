@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: e8aaf5ef75375469a9e3cb3141eed12b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - quizData: {fileID: 4900000, guid: 9601b77838b5a41f8a25c89169c5240f, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
