@@ -24,7 +24,7 @@ public class ScoreKeeper : MonoBehaviour
         }
         percent = (float) correctAnswers / totalAnswered * 100;
         Debug.Log(string.Format("Score total:{0}, correct:{1}, new value:{2}", totalAnswered, correctAnswers, percent));
-        scoreDisplay = string.Format("Score: {0} %", percent);
+        scoreDisplay = string.Format("Score: {0:F2} %", percent);
     }
 
     public string getDisplay() {

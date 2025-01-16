@@ -49,4 +49,12 @@ public class Timer : MonoBehaviour
         clockRunning = false;
         Debug.Log("stop timer");
     }
+
+
+    public void setQuestionTime(int val) {
+        questionTime = val;
+    }
+    public void setDelay(int val) {
+        waitForNextTime = val;
+    }
 }

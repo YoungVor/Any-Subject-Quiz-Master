@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     Quiz quiz;
     EndScreen endScreen;
+    MenuScript menu;
     float transitionTimer = 0;
     bool endingGame = false;
     bool restartingGame = false;
@@ -15,16 +16,22 @@ public class GameManager : MonoBehaviour
     {
         quiz = FindObjectOfType<Quiz>();
         endScreen = FindObjectOfType<EndScreen>();
+        menu = FindObjectOfType<MenuScript>();
     }
 
     void Start() {
-        quiz.gameObject.SetActive(true);
+        menu.gameObject.SetActive(true);
+        quiz.gameObject.SetActive(false);
         endScreen.gameObject.SetActive(false);
     }
 
     void Update()
     {
         // todo: add menu canvas
+        if (menu.gameObject.activeInHierarchy && menu.readyPlayer()) {
+            menu.gameObject.SetActive(false);
+            quiz.gameObject.SetActive(true);
+        }
         if (quiz.gameObject.activeInHierarchy && quiz.getQuizState() == Quiz.QuizState.End) {
             quiz.quitQuiz();
             quiz.gameObject.SetActive(false);

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.IO;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
@@ -43,6 +44,7 @@ public class Quiz : MonoBehaviour
     private QuizState quizState;
     private bool commitPressed;
     int orderFontSize = 120;
+    List<String> questionTable;
 
     public enum QuizState {
         Menu,
@@ -155,22 +157,51 @@ public class Quiz : MonoBehaviour
         StartCoroutine(gradeAnswers());
     }
 
+    public void readQuizData(string path) {
+
+        // TODO: make this an async call and add state that blocks game start on its completion
+        questionTable = new List<String>();
+        Debug.Log("readQuizData:" + path);
+        using (StreamReader sr = new StreamReader(path))
+            {
+                string line;
+                // Read and display lines from the file until the end of
+                // the file is reached.
+                while ((line = sr.ReadLine()) != null)
+                {
+                    questionTable.Insert(questionTable.Count, line);
+                }
+            }
+        Debug.Log(string.Format("Finished parsing file {0}.  Question count: {1}", path, questionTable.Count));
+
+    }
+
+    public void setQuestionCount(int val) {
+        questionCount = val;
+    }
+    public void setTimeout(int val) {
+        timer.setQuestionTime(val);
+    }
+    public void setQuestionDelay(int val) {
+        timer.setDelay(val);
+    }
+
     private void parseQuizData() {
-        string[] questionLines = quizData.text.Split("\n", StringSplitOptions.None);
+        //questionTable = quizData.text.Split("\n", StringSplitOptions.None);
         
-        Debug.Assert(questionLines.Length > 0);
-        string[] heading = questionLines[0].Split(",", StringSplitOptions.None);
+        Debug.Assert(questionTable.Count > 0);
+        string[] heading = questionTable[0].Split(",", StringSplitOptions.None);
         //Debug.Log("Parsed heading: " + String.Join(",",heading));
         
         // we will parse and load X random questions
         //List<bool> parsedQuestions  = new List<bool>(questionLines.Length){false};
-        bool[] parsedQuestions = new bool[questionLines.Length];
-        for (int i = 1; i < questionLines.Length; i++) { parsedQuestions[i] = false; };
+        bool[] parsedQuestions = new bool[questionTable.Count];
+        for (int i = 1; i < questionTable.Count; i++) { parsedQuestions[i] = false; };
         parsedQuestions[0] = true; // remove header
 
         for (int i = 0; i < questionCount; i++) {
             //Debug.Log(String.Format("call parse and add question: cq:{0}, ql:{1}", parsedQuestions.Length, questionLines.Length));
-            bool noMoreQuestions = parseAndAddRandomQuestion(ref parsedQuestions, ref questionLines);
+            bool noMoreQuestions = parseAndAddRandomQuestion(ref parsedQuestions);
             string dbgList = "";
             for (int j = 0; j < parsedQuestions.Length; j++) { dbgList += string.Format("{0}:{1},", j.ToString(), parsedQuestions[j].ToString()); }
             Debug.Log("bool array:" + dbgList);
@@ -185,22 +216,22 @@ public class Quiz : MonoBehaviour
 
     // grab random X choices in array
     // return true if empty (fewer available questions than questionCount)
-    private bool parseAndAddRandomQuestion(ref bool[] chosenQuestions, ref string[] questionLines) {
+    private bool parseAndAddRandomQuestion(ref bool[] chosenQuestions) {
         int startIndex;
         int chosenIndex;
         
-        Debug.Log(String.Format("parse and add question: cq:{0}, ql:{1}", chosenQuestions.Length, questionLines.Length));
+        Debug.Log(String.Format("parse and add question: cq:{0}, ql:{1}", chosenQuestions.Length, questionCount));
         while (true) {
-            startIndex = chosenIndex = UnityEngine.Random.Range(1,questionLines.Length);
+            startIndex = chosenIndex = UnityEngine.Random.Range(1,questionTable.Count);
             while (chosenQuestions[chosenIndex] == true) {
                 chosenIndex++;
-                if (chosenIndex >= questionLines.Length) { chosenIndex = 1; } // skip first one }
+                if (chosenIndex >= questionTable.Count) { chosenIndex = 1; } // skip first one }
                 if (chosenIndex == startIndex) { return true; }
             } 
 
             Debug.Log("parsing question index:" + chosenIndex);
             chosenQuestions[chosenIndex] = true;
-            string [] questionText = questionLines[chosenIndex].Split(",", StringSplitOptions.None);
+            string [] questionText = questionTable[chosenIndex].Split(",", StringSplitOptions.None);
             QuestionSO question = ScriptableObject.CreateInstance<QuestionSO>();
 
             try {
